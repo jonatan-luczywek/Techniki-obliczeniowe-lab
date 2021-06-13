@@ -1,0 +1,30 @@
+%ode45(@(t, q) odefun(t, q), [0, 100], [1, 2]);
+param = odeset('maxstep',0.01);
+[t,y] = ode45(@odefun,[0 100],[1 2],param);
+
+x = y(:,1);
+v = y(:,2);
+subplot(1,2,1);
+plotyy(t,x,t,v);
+subplot 122
+plot(x,v);
+axis equal
+
+function dqdt = odefun(t, q)
+
+x = q(1);
+v = q(2);
+global k m;
+k = 0.01 * sign(x);
+m = 0.5; %kg
+F = -k * x^2;
+dqdt = zeros(2, 1);
+a = F / m;
+
+dqdt(1) = v;
+dqdt(2) = a;
+
+q = [x, v];
+
+
+end
